@@ -13,4 +13,5 @@ const request = https.get(`https://teamtreehouse.com/${username}.json`, response
     console.log(response.statusCode);
     // Parse the data
     // Print the data
+    //
 });
