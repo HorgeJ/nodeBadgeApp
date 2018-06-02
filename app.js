@@ -8,7 +8,7 @@ function printMessage(username,badgeCount,points){
 }
 
 function getProfile(username){
-
+try {
 // Connect to API URL
 const request = https.get(`https://teamtreehouse.com/${username}.json`, response => { // connect to Treehouse API corresponding to username provided in argv
     // Read the data
@@ -23,7 +23,9 @@ const request = https.get(`https://teamtreehouse.com/${username}.json`, response
         printMessage(username,profile.badges.length,profile.points.JavaScript); // call print message function
     });
 });
-
+} catch(error) {
+        console.error(error.message); // if err, print out message from error object
+    }
 }
 
 const users = process.argv.slice(2);    // access command line arguments, remove the first two
