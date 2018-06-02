@@ -1,5 +1,5 @@
 // App that connects to treehouse API and displays users badges using the command line argument.
-const username = "justhorge";
+
 const https = require('https'); // require https module
 // Function to print message to console.
 function printMessage(username,badgeCount,points){
@@ -7,15 +7,24 @@ function printMessage(username,badgeCount,points){
     console.log(message);   // print message to console
 }
 
-// Connect to API URL
-const request = https.get(`https://teamtreehouse.com/${username}.json`, response => {
-    // Read the data
-    // Parse the data
-    // Print the data
-    let body = "";
-    response.on('data', data =>{
-        console.log('data:', data.toString());
-    });
+function getProfile(username){
 
-    // testing git repo
+// Connect to API URL
+const request = https.get(`https://teamtreehouse.com/${username}.json`, response => { // connect to Treehouse API corresponding to username provided in argv
+    // Read the data
+    let body = "";                  // variable to hold concat string of response
+    response.on('data', data =>{    // returns data, add it to temp string
+        body += data.toString();
+    });
+        // Parse the data
+    response.on('end', ()=>{        // when response returns end, parse the data into JSON object
+        const profile = JSON.parse(body);   // parsed JSON object
+        // print message
+        printMessage(username,profile.badges.length,profile.points.JavaScript); // call print message function
+    });
 });
+
+}
+
+const users = process.argv.slice(2);    // access command line arguments, remove the first two
+users.forEach(getProfile);              // call getProfile function for each user, using argv array of users
